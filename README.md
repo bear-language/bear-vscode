@@ -74,3 +74,6 @@ order of `patterns` at the top level and within `keyword.patterns` matters:
 - `constant-case` is listed before `pascal-type` so ALL_CAPS words are claimed first.
 - Keywords are matched before identifiers for the same reason.
 - Longer operator patterns appear before shorter ones to avoid partial matches.
+
+##### other notes 
+- for myself: a publish field with my publisher id once I have one
