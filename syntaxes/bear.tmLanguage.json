@@ -1,0 +1,187 @@
+{
+  "name": "Bear",
+  "scopeName": "source.bear",
+  "fileTypes": ["bear"],
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string" },
+    { "include": "#char" },
+    { "include": "#number" },
+    { "include": "#keyword" },
+    { "include": "#operator" },
+    { "include": "#delimiter" },
+    { "include": "#scoped-identifier" },
+    { "include": "#function-call" },
+    { "include": "#constant-case" },
+    { "include": "#pascal-type" },
+    { "include": "#identifier" }
+  ],
+  "repository": {
+
+    "comment": {
+      "comment": "Line comments only — // to end of line",
+      "name": "comment.line.double-slash.bear",
+      "match": "\\/\\/.*$",
+      "captures": {
+        "0": {
+          "patterns": [
+            {
+              "match": "\\b(TODO|FIXME|XXX|NOTE)\\b",
+              "name": "keyword.other.todo.bear"
+            }
+          ]
+        }
+      }
+    },
+
+    "string": {
+      "comment": "Double-quoted string literal",
+      "name": "string.quoted.double.bear",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "match": "\\\\.", "name": "constant.character.escape.bear" }
+      ]
+    },
+
+    "char": {
+      "comment": "Single-quoted char literal",
+      "name": "string.quoted.single.bear",
+      "match": "'([^'\\\\]|\\\\.)'",
+      "captures": {
+        "0": { "name": "string.quoted.single.bear" }
+      }
+    },
+
+    "number": {
+      "patterns": [
+        {
+          "comment": "Hex integer",
+          "name": "constant.numeric.hex.bear",
+          "match": "\\b0x[0-9A-Fa-f]+\\b"
+        },
+        {
+          "comment": "Float",
+          "name": "constant.numeric.float.bear",
+          "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
+        },
+        {
+          "comment": "Decimal integer",
+          "name": "constant.numeric.integer.bear",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+
+    "keyword": {
+      "patterns": [
+        {
+          "comment": "Include / imports — bearInclude",
+          "name": "keyword.control.import.bear",
+          "match": "\\b(import)\\b"
+        },
+        {
+          "comment": "Storage class / mutability / visibility — bearStorageClass",
+          "name": "storage.modifier.bear",
+          "match": "\\b(mut|var|static|extern|compt|hid|pub)\\b"
+        },
+        {
+          "comment": "Type-defining structure keywords — bearStructure",
+          "name": "storage.type.bear",
+          "match": "\\b(variant|struct|union|deftype)\\b"
+        },
+        {
+          "comment": "Control flow — bearStatement",
+          "name": "keyword.control.flow.bear",
+          "match": "\\b(return|yield|break|continue)\\b"
+        },
+        {
+          "comment": "Conditionals — bearConditional",
+          "name": "keyword.control.conditional.bear",
+          "match": "\\b(if|else|match)\\b"
+        },
+        {
+          "comment": "Loops — bearRepeat",
+          "name": "keyword.control.loop.bear",
+          "match": "\\b(while|for|in)\\b"
+        },
+        {
+          "comment": "Compile-time intrinsics — bearMacro",
+          "name": "keyword.operator.expression.bear",
+          "match": "\\b(sizeof|alignof|typeof|alignas)\\b"
+        },
+        {
+          "comment": "Boolean and null literals — bearBoolean",
+          "name": "constant.language.bear",
+          "match": "\\b(true|false|null)\\b"
+        },
+        {
+          "comment": "Primitive types — bearType",
+          "name": "storage.type.primitive.bear",
+          "match": "\\b(i8|u8|i16|u16|i32|u32|i64|u64|usize|char|f32|f64|str|bool|void)\\b"
+        },
+        {
+          "comment": "Remaining keywords — bearKeyword",
+          "name": "keyword.other.bear",
+          "match": "\\b(mod|use|fn|mt|dt|contract|requires|has|is|move|as|self|Self)\\b"
+        }
+      ]
+    },
+
+    "operator": {
+      "comment": "Operators — longest first to avoid partial matches",
+      "patterns": [
+        { "name": "keyword.operator.bear", "match": ">>>=" },
+        { "name": "keyword.operator.bear", "match": "(<<=|>>=|>>>|\\.\\.\\.=)" },
+        { "name": "keyword.operator.bear", "match": "(->|=>|<-|<<-|::|\\.\\.)|<<|>>|>=|<=|==|!=|\\+=|-=|\\*=|/=|%=|&=|\\^=|\\|\\||&&" },
+        { "name": "keyword.operator.bear", "match": "(\\+\\+|--|\\.\\.\\.)"},
+        { "name": "keyword.operator.bear", "match": "[+\\-*/%=&|!<>^~]" }
+      ]
+    },
+
+    "delimiter": {
+      "comment": "Punctuation and delimiters",
+      "patterns": [
+        {
+          "name": "punctuation.brackets.bear",
+          "match": "[(){}\\[\\]]"
+        },
+        {
+          "name": "punctuation.delimiter.bear",
+          "match": "[,;:#.]"
+        }
+      ]
+    },
+
+    "scoped-identifier": {
+      "comment": "Scoped identifiers like foo..bar..baz — bearScopedIdentifier",
+      "name": "variable.other.scoped.bear",
+      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(\\.\\.([A-Za-z_][A-Za-z0-9_]*))+\\b"
+    },
+
+    "function-call": {
+      "comment": "Any lowercase/underscore identifier immediately before a ( — bearFunction",
+      "name": "entity.name.function.bear",
+      "match": "\\b[a-z_][A-Za-z0-9_]*(?=\\s*\\()"
+    },
+
+    "constant-case": {
+      "comment": "ALL_CAPS_IDENTIFIERS — bearConstant. Must come before pascal-type.",
+      "name": "constant.other.bear",
+      "match": "\\b[A-Z][A-Z0-9_]*\\b"
+    },
+
+    "pascal-type": {
+      "comment": "PascalCase types — must contain at least one lowercase letter to exclude ALL_CAPS",
+      "name": "entity.name.type.bear",
+      "match": "\\b[A-Z][A-Za-z0-9_]*[a-z][A-Za-z0-9_]*\\b"
+    },
+
+    "identifier": {
+      "comment": "Plain lowercase/underscore identifiers — bearIdentifier",
+      "name": "variable.other.bear",
+      "match": "\\b[a-z_][A-Za-z0-9_]*\\b"
+    }
+
+  }
+}
