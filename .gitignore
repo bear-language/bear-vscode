@@ -1,2 +1,4 @@
 # vsix artifacts
 bear-language-*
+package-lock.json
+node_modules
