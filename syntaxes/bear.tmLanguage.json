@@ -8,9 +8,9 @@
     { "include": "#char" },
     { "include": "#number" },
     { "include": "#keyword" },
+    { "include": "#builtin" },
     { "include": "#operator" },
     { "include": "#delimiter" },
-    { "include": "#scoped-identifier" },
     { "include": "#function-call" },
     { "include": "#constant-case" },
     { "include": "#pascal-type" },
@@ -19,7 +19,7 @@
   "repository": {
 
     "comment": {
-      "comment": "Line comments only — // to end of line",
+      "comment": "Line comments only - // to end of line",
       "name": "comment.line.double-slash.bear",
       "match": "\\/\\/.*$",
       "captures": {
@@ -45,12 +45,9 @@
     },
 
     "char": {
-      "comment": "Single-quoted char literal",
-      "name": "string.quoted.single.bear",
-      "match": "'([^'\\\\]|\\\\.)'",
-      "captures": {
-        "0": { "name": "string.quoted.single.bear" }
-      }
+      "comment": "Single-quoted char literal - bearChar (linked to Character, distinct from String)",
+      "name": "constant.character.bear",
+      "match": "'([^'\\\\]|\\\\.)'"
     },
 
     "number": {
@@ -76,109 +73,111 @@
     "keyword": {
       "patterns": [
         {
-          "comment": "Include / imports — bearInclude",
+          "comment": "Include / imports - bearInclude",
           "name": "keyword.control.import.bear",
           "match": "\\b(import)\\b"
         },
         {
-          "comment": "Storage class / mutability / visibility — bearStorageClass",
+          "comment": "Storage class / mutability / visibility - bearStorageClass (var is NOT here; it's bearSpecial)",
           "name": "storage.modifier.bear",
-          "match": "\\b(mut|var|static|extern|compt|hid|pub)\\b"
+          "match": "\\b(mut|static|extern|compt|hid|pub)\\b"
         },
         {
-          "comment": "Type-defining structure keywords — bearStructure",
+          "comment": "bearSpecial keyword",
+          "name": "keyword.other.special.bear",
+          "match": "\\b(var)\\b"
+        },
+        {
+          "comment": "Type-defining structure keywords - bearStructure",
           "name": "storage.type.bear",
-          "match": "\\b(variant|struct|union|deftype)\\b"
+          "match": "\\b(variant|struct|contract|union|deftype)\\b"
         },
         {
-          "comment": "Control flow — bearStatement",
+          "comment": "Control flow - bearStatement",
           "name": "keyword.control.flow.bear",
           "match": "\\b(return|yield|break|continue)\\b"
         },
         {
-          "comment": "Conditionals — bearConditional",
+          "comment": "Conditionals - bearConditional",
           "name": "keyword.control.conditional.bear",
           "match": "\\b(if|else|match)\\b"
         },
         {
-          "comment": "Loops — bearRepeat",
+          "comment": "Loops - bearRepeat",
           "name": "keyword.control.loop.bear",
           "match": "\\b(while|for|in)\\b"
         },
         {
-          "comment": "Compile-time intrinsics — bearMacro",
-          "name": "keyword.operator.expression.bear",
-          "match": "\\b(sizeof|alignof|typeof|alignas)\\b"
+          "comment": "bearMacro - only alignas",
+          "name": "keyword.other.macro.bear",
+          "match": "\\b(alignas)\\b"
         },
         {
-          "comment": "Boolean and null literals — bearBoolean",
+          "comment": "Boolean and null literals - bearBoolean",
           "name": "constant.language.bear",
           "match": "\\b(true|false|null)\\b"
         },
         {
-          "comment": "Primitive types — bearType",
+          "comment": "Primitive types - bearType",
           "name": "storage.type.primitive.bear",
-          "match": "\\b(i8|u8|i16|u16|i32|u32|i64|u64|usize|char|f32|f64|str|bool|void)\\b"
+          "match": "\\b(i8|u8|i16|u16|i32|u32|i64|u64|usize|isize|char|f32|f64|str|bool|void)\\b"
         },
         {
-          "comment": "Remaining keywords — bearKeyword",
+          "comment": "Remaining keywords - bearKeyword (includes typeof and decay, which are highlighted as keywords in the vim source)",
           "name": "keyword.other.bear",
-          "match": "\\b(mod|use|fn|mt|dt|contract|requires|has|is|move|as|self|Self)\\b"
+          "match": "\\b(mod|use|fn|mt|dt|requires|has|is|move|as|self|Self|typeof|decay)\\b"
         }
       ]
     },
 
+    "builtin": {
+      "comment": "Compiler builtins/intrinsics prefixed with @ - bearSpecial",
+      "name": "keyword.other.special.bear",
+      "match": "@(?:same_type|type_to_str|has_contract|static_assert|defined|inferable_as|err|warn|note|help|alignof|sizeof|id|type_id|scoped_id)\\b"
+    },
+
     "operator": {
-      "comment": "Operators — longest first to avoid partial matches",
+      "comment": "Operators - special arrows first, then longest to shortest to avoid partial matches",
       "patterns": [
+        {
+          "comment": "=> is more syntactically significant - bearSpecial",
+          "name": "keyword.other.special.bear",
+          "match": "=>"
+        },
         { "name": "keyword.operator.bear", "match": ">>>=" },
         { "name": "keyword.operator.bear", "match": "(<<=|>>=|>>>|\\.\\.\\.=)" },
-        { "name": "keyword.operator.bear", "match": "(->|=>|<-|<<-|::|\\.\\.)|<<|>>|>=|<=|==|!=|\\+=|-=|\\*=|/=|%=|&=|\\^=|\\|\\||&&" },
-        { "name": "keyword.operator.bear", "match": "(\\+\\+|--|\\.\\.\\.)"},
+        { "name": "keyword.operator.bear", "match": "(\\+\\+|--|\\.\\.\\.)" },
+        { "name": "keyword.operator.bear", "match": "(->|<<-|::|\\.\\.|<<|>>|>=|<=|==|!=|\\+=|-=|\\*=|/=|%=|&=|\\^=|\\|\\||&&)" },
         { "name": "keyword.operator.bear", "match": "[+\\-*/%=&|!<>^~]" }
       ]
     },
 
     "delimiter": {
-      "comment": "Punctuation and delimiters",
-      "patterns": [
-        {
-          "name": "punctuation.brackets.bear",
-          "match": "[(){}\\[\\]]"
-        },
-        {
-          "name": "punctuation.delimiter.bear",
-          "match": "[,;:#.]"
-        }
-      ]
-    },
-
-    "scoped-identifier": {
-      "comment": "Scoped identifiers like foo..bar..baz — bearScopedIdentifier",
-      "name": "variable.other.scoped.bear",
-      "match": "\\b[A-Za-z_][A-Za-z0-9_]*(\\.\\.([A-Za-z_][A-Za-z0-9_]*))+\\b"
+      "comment": "Punctuation and delimiters - bearDelimiter (brackets and punctuation share one highlight group in the vim source)",
+      "name": "punctuation.delimiter.bear",
+      "match": "[(){}\\[\\],;:#.]"
     },
 
     "function-call": {
-      "comment": "Any lowercase/underscore identifier immediately before a ( — bearFunction",
+      "comment": "Any lowercase/underscore identifier immediately before a ( - bearFunction",
       "name": "entity.name.function.bear",
       "match": "\\b[a-z_][A-Za-z0-9_]*(?=\\s*\\()"
     },
 
     "constant-case": {
-      "comment": "ALL_CAPS_IDENTIFIERS — bearConstant. Must come before pascal-type.",
+      "comment": "ALL_CAPS_IDENTIFIERS - bearConstant. Must come before pascal-type.",
       "name": "constant.other.bear",
       "match": "\\b[A-Z][A-Z0-9_]*\\b"
     },
 
     "pascal-type": {
-      "comment": "PascalCase types — must contain at least one lowercase letter to exclude ALL_CAPS",
+      "comment": "PascalCase types - must contain at least one lowercase letter to exclude ALL_CAPS",
       "name": "entity.name.type.bear",
       "match": "\\b[A-Z][A-Za-z0-9_]*[a-z][A-Za-z0-9_]*\\b"
     },
 
     "identifier": {
-      "comment": "Plain lowercase/underscore identifiers — bearIdentifier",
+      "comment": "Plain lowercase/underscore identifiers - bearIdentifier",
       "name": "variable.other.bear",
       "match": "\\b[a-z_][A-Za-z0-9_]*\\b"
     }
