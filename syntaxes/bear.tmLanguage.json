@@ -133,7 +133,7 @@
     "builtin": {
       "comment": "Compiler builtins/intrinsics prefixed with @ - bearSpecial",
       "name": "keyword.other.special.bear",
-      "match": "@(?:same_type|type_to_str|has_contract|static_assert|defined|inferable_as|err|warn|note|help|alignof|sizeof|id|type_id|scoped_id)\\b"
+      "match": "@(?:same_type|type_to_str|has_contract|static_assert|defined|inferable_as|err|warn|note|help|alignof|sizeof|members_of|statics_of|id|type_id|scoped_id)\\b"
     },
 
     "operator": {
