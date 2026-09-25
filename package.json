@@ -1,14 +1,14 @@
 {
   "name": "bear-language",
   "displayName": "Bear Language",
-  "description": "Extension adding support for Bear in VSCode. As of now, this just adds syntax highlighting for the Bear language, but more features are planned.",
+  "description": "Extension adding support for Bear in VSCode, including syntax highlighting and language server features via bearls.",
   "version": "0.0.1",
   "author": {
     "name": "Zach Mahan",
     "email": "zachm6464@gmail.com",
     "url": "https://github.com/zachMahan64"
   },
-  "license": "GNU GPLv3",
+  "license": "Apache-2.0",
   "homepage": "https://github.com/bear-language/bear-vscode",
   "repository": {
     "type": "git",
@@ -23,8 +23,10 @@
     "color": "#1e1e2e",
     "theme": "dark"
   },
-  "engines": { "vscode": "^1.70.0" },
+  "engines": { "vscode": "^1.91.0" },
   "categories": ["Programming Languages"],
+  "main": "./extension.js",
+  "activationEvents": ["onLanguage:bear"],
   "contributes": {
     "languages": [
       {
@@ -40,6 +42,38 @@
         "scopeName": "source.bear",
         "path": "./syntaxes/bear.tmLanguage.json"
       }
-    ]
+    ],
+    "commands": [
+      {
+        "command": "bear.restartServer",
+        "title": "Restart Language Server",
+        "category": "Bear"
+      }
+    ],
+    "configuration": {
+      "title": "Bear",
+      "properties": {
+        "bear.server.path": {
+          "type": "string",
+          "default": "bearls",
+          "markdownDescription": "Path to the `bearls` language server executable. Defaults to `bearls` on your `PATH`."
+        },
+        "bear.server.args": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Extra arguments passed to the language server."
+        },
+        "bear.trace.server": {
+          "type": "string",
+          "enum": ["off", "messages", "verbose"],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Bear language server."
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "vscode-languageclient": "^10.1.1"
   }
 }
