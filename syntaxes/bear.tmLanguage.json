@@ -9,9 +9,11 @@
     { "include": "#number" },
     { "include": "#keyword" },
     { "include": "#builtin" },
+    { "include": "#arrow-delimiter" },
     { "include": "#operator" },
     { "include": "#delimiter" },
     { "include": "#function-call" },
+    { "include": "#turbofish" },
     { "include": "#constant-case" },
     { "include": "#pascal-type" },
     { "include": "#identifier" }
@@ -147,9 +149,15 @@
         { "name": "keyword.operator.bear", "match": ">>>=" },
         { "name": "keyword.operator.bear", "match": "(<<=|>>=|>>>|\\.\\.\\.=)" },
         { "name": "keyword.operator.bear", "match": "(\\+\\+|--|\\.\\.\\.)" },
-        { "name": "keyword.operator.bear", "match": "(->|<<-|::|\\.\\.|<<|>>|>=|<=|==|!=|\\+=|-=|\\*=|/=|%=|&=|\\^=|\\|\\||&&)" },
+        { "name": "keyword.operator.bear", "match": "(\\.\\.|<<|>>|>=|<=|==|!=|\\+=|-=|\\*=|/=|%=|&=|\\^=|\\|\\||&&)" },
         { "name": "keyword.operator.bear", "match": "[+\\-*/%=&|!<>^~]" }
       ]
+    },
+
+    "arrow-delimiter": {
+      "comment": "-> and :: are delimiters (bearDelimiter), not operators. Included before #operator so - and : don't match first.",
+      "name": "punctuation.delimiter.bear",
+      "match": "->|::"
     },
 
     "delimiter": {
@@ -162,6 +170,12 @@
       "comment": "Any lowercase/underscore identifier immediately before a ( - bearFunction",
       "name": "entity.name.function.bear",
       "match": "\\b[a-z_][A-Za-z0-9_]*(?=\\s*\\()"
+    },
+
+    "turbofish": {
+      "comment": "Lowercase identifier immediately before :: (foo::<...> / foo::T) - bearFunction",
+      "name": "entity.name.function.bear",
+      "match": "\\b[a-z_][A-Za-z0-9_]*(?=::)"
     },
 
     "constant-case": {
