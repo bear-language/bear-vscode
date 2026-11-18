@@ -157,7 +157,7 @@
     "arrow-delimiter": {
       "comment": "-> and :: are delimiters (bearDelimiter), not operators. Included before #operator so - and : don't match first.",
       "name": "punctuation.delimiter.bear",
-      "match": "->|::"
+      "match": "->|::|~>"
     },
 
     "delimiter": {
